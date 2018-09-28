@@ -1,0 +1,101 @@
+https://www.elastic.co/webinars/get-started-with-elasticsearch?elektra=home&storm=banner
+
+min 24.36
+
+
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+PUT /twitter/tweet/1
+{
+    "user" : "kimchy",
+    "post_date" : "2009-11-15T14:12:12",
+    "message" : "trying out Elastic Search"
+}
+
+GET /twitter/tweet/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET /_cluster/health?pretty
+
+#___________________________________
+#DOCUMENT CRUD OPERATIONS
+#   Create
+#   Read
+#   Update
+#   Delete
+#___________________________________
+
+
+#___________________________________
+#  indexar un documento JSON
+
+
+#     ----- Nombre Index
+#     |
+#     |         ----- Nombre Type
+#     |        |
+#     |        |   ----- Doc_ID
+#     |        |   |
+#     v        v   v
+PUT /library/books/1
+{
+  "titulo" : "A fly in the wall",
+  "nombre" : {
+      "nombre" : "drosdofilia",
+      "apellido" : "Melangaster"
+  },
+  "fecha_publicacion" : "2015-12-02T23:39:49-0400",
+  "precio" : 19.95
+}
+
+#_______________________________
+# OBTENER EL DOCUMENTO VIA ID
+# SEARCH by ID
+
+GET /library/books/1
+GET /library/books/_search
+GET /library/books/noexiste
+
+
+#________________________________
+#UPDATE
+#Para actualizar simplemente sobreescibimos el index o registro.
+
+PUT /library/books/1
+{
+  "titulo" : "A fly in the wall the beggining",
+  "nombre" : {
+      "nombre" : "drosdofilia",
+      "apellido" : "Melangaster"
+  },
+  "fecha_publicacion" : "2015-12-03T23:39:49-0400",
+  "precio" : 39.95
+}
+
+#validamos el registro, checa que ahora hay un campo llamado _version que esta en 2, este indica que el registro fue actualizado y estas viendo la version 2 o el segundo cambio.
+
+GET /library/books/1
+
+
+# que pasa si por ejemplo olvidamos mapear alguna propiedad o campo?
+# aqui quitamos el precio
+PUT /library/books/1
+{
+  "titulo" : "A fly in the wall the beggining",
+  "nombre" : {
+      "nombre" : "drosdofilia",
+      "apellido" : "Melangaster"
+  },
+  "fecha_publicacion" : "2015-12-03T23:39:49-0400",
+}
+
+GET /library/books/1
